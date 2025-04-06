@@ -14,9 +14,43 @@ services:
     volumes:
         - ./prom_server/prometheus.yml:/etc/prometheus/prometheus.yml
     restart: unless-stopped
+    depends_on: 
+      - ubuntu_server
 
+  # === Grafana Server === # 
+  grafana: 
+    image: grafana/grafana:latest
+    container_name: grafana_server 
+    networks: 
+      - montinar_system 
+    ports: 
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    restart: unless-stopped
 
+  # === ubuntu Server === # 
+  ubuntu_server: 
+    build: ./ubuntu_server
+    container_name: ubuntu_server 
+    networks:
+      montinar_system:
+    volumes: 
+      - ./ubuntu_server/app:/app
+    ports: 
+      - "9100:9100"
+      - "8080:80"
+    restart: unless-stopped
+    stdin_open: true 
+    tty: true 
+    
 # === Network === # 
 networks: 
   montinar_system: 
 
+volumes:
+  grafana-storage:

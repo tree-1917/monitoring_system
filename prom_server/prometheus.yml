@@ -3,6 +3,6 @@ global:
 
 
 scrape_configs:
-  - job_name: "prometheus"
+  - job_name: "ubuntu_server"
     static_configs:
-      - targets: [ "localhost:9090" ]
+      - targets: [ "ubuntu_server:9100" ]
