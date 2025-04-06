@@ -1,0 +1,22 @@
+# version: '3.8'
+
+
+# === Service === # 
+services:
+  # === Prometheus Server ==== #
+  prometheus: 
+    image: prom/prometheus:latest 
+    container_name: prometheus 
+    networks: 
+      montinar_system:
+    ports:
+        - "9090:9090"
+    volumes:
+        - ./prom_server/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+
+
+# === Network === # 
+networks: 
+  montinar_system: 
+
