@@ -8,11 +8,11 @@ services:
     image: prom/prometheus:latest 
     container_name: prometheus 
     networks: 
-      montinar_system:
+      - montinar_system
     ports:
-        - "9090:9090"
+      - "9090:9090"
     volumes:
-        - ./prom_server/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prom_server/prometheus.yml:/etc/prometheus/prometheus.yml
     restart: unless-stopped
     depends_on: 
       - ubuntu_server
@@ -33,17 +33,18 @@ services:
       - prometheus
     restart: unless-stopped
 
-  # === ubuntu Server === # 
+  # === Ubuntu Server === # 
   ubuntu_server: 
     build: ./ubuntu_server
     container_name: ubuntu_server 
     networks:
-      montinar_system:
+      - montinar_system
     volumes: 
-      - ./ubuntu_server/app:/app
+      - ./ubuntu_server/app:/app:ro
+      - ./ubuntu_server/app/website:/var/www/html:ro
     ports: 
       - "9100:9100"
-      - "8080:80"
+      - "8080:80"  
     restart: unless-stopped
     stdin_open: true 
     tty: true 
